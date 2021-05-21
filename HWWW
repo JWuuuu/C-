@@ -1,0 +1,128 @@
+#include <bits/stdc++.h>
+#include <unistd.h>
+using namespace std;
+vector<vector<int> > v;
+vector<vector<int> > o;
+
+
+int counter;
+int width;
+int length;
+int yorb;
+bool yeet;
+int limit;
+vector<vector<int>> vect;
+
+void displayarray(vector<vector<int> > a){
+  for(int i=0;i<length+2;i++){
+    for(int j=0;j<width+2;j++){
+      if(a[i][j] == 1){
+        cout<<"\x1B[33m"<<"■ "<<"\033[0m";
+      }
+      else if (a[i][j] == 2){
+        cout<<"\x1B[34m"<<"■ "<<"\033[0m";
+      }
+      else if (a[i][j] == 3){
+        cout<<"\x1B[35m"<<"■ "<<"\033[0m";
+      }
+      else cout << "w ";
+    }
+    cout<<endl;
+  }
+  cout<<endl;
+}
+
+int testM(int x, int y){
+    if(v[x][y] == 1) { 
+      counter++;
+			v[x][y] = 3;
+			if(v[x+1][y] == 1) {
+				testM(x+1,y);
+			}
+			if(v[x-1][y] == 1) {
+				testM(x-1,y);
+			}
+			if(v[x][y+1] == 1) {
+				testM(x,y+1);
+			}
+			if(v[x][y-1] == 1) {
+				testM(x,y-1);
+			}
+		}
+		return counter;
+	}
+void test( int x, int y) {
+  cout<<"position: "<<x<<y<<endl;
+  displayarray(o);
+		if(o[x][y] == 1) {
+			o[x][y] = 3;
+			if(o[x+1][y] == 1) {
+				test(x+1,y);
+			}
+			if(o[x-1][y] == 1) {
+				test(x-1,y);
+			}
+			if(o[x][y+1] == 1) {
+				test(x,y+1);
+			}
+			if(o[x][y-1] == 1) {
+				test(x,y-1);
+			}
+
+		}
+    
+}
+
+void createarray(){
+cout<<"Length: "<<endl;
+cin>> length;
+cout<<"Width: "<<endl;
+cin>> width;
+v.resize(length+2);
+for(int i=0;i<length+2;i++){
+  v[i].resize(width+2);
+    for(int j=0;j<width+2;j++){
+      v[i][j]=0;
+  }
+ }
+cout<<endl;
+}
+void setarray(){
+  for(int i=1;i<length+1;i++){
+    for(int j=1;j<width+1;j++){
+      yorb = rand() % 2 +1;
+        v[i][j]= yorb;
+      }
+      cout<<endl;
+    }
+  cout<<endl;
+}
+
+int main(){
+  yeet=false;
+  counter =0;
+  srand(time(0));
+  createarray();
+  setarray();
+  displayarray(v);
+  o=v;
+  displayarray(o);
+  limit = 0;
+		int mX = 0;
+    int mY = 0;
+		for(int i = 1 ; i < length+1 ; i++) {
+			for(int j = 1 ; j < width+1 ; j++) {
+        counter=0;
+				if(testM( i,  j) > limit) {
+					mX=i;
+					mY=j;
+          limit = testM( i,  j);                       
+				}
+			}
+		}
+    cout<<"limit: "<<limit<<endl;
+    cout<<"position: "<<mX<<mY<<endl;
+    displayarray(o);
+	  test( mX,  mY);
+    displayarray(o);
+}
